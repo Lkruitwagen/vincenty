@@ -1,37 +1,30 @@
 Vincenty
 ========
 
-Calculate the geographical distance (in kilometers or miles) between 2 points
-with extreme accuracy.
+Calculate direct and inverse Vincenty methods. The direct method calculates the destination coordinates given an origin coordinate, a geodesic (great circle) distance, and a departure azimuth angle. The inverse method calculates a geodesic distance given origin and destination coordinates. The direct method also returns the arrival azimuth angle, and the inverse method returns both the departure and arrival azimuth angles. 
 
-This library implements Vincenty's solution to the inverse geodetic problem. It
-is based on the WGS 84 reference ellipsoid and is accurate to within 1 mm (!) or
-better.
-
-This formula is widely used in geographic information systems (GIS) and is much
-more accurate than methods for computing the great-circle distance (which assume
-a spherical Earth).
+Vincenty's method solves for geodesic distances on an ellipsoid and is widely used in geographic information systems. It is much more accurate than spherical-earth assumptions and is accurate within 1mm. The implementation given here uses the WGS84 ellipsoid, a standard reference geometry for Earth.
 
 Example: distance between Boston and New York City
 --------------------------------------------------
 
 .. code:: python
 
-   >>> from vincenty import vincenty
+   >>> from vincenty import *
    >>> boston = (42.3541165, -71.0693514)
    >>> newyork = (40.7791472, -73.9680804)
-   >>> vincenty(boston, newyork)
-   298.396057
-   >>> vincenty(boston, newyork, miles=True)
-   185.414657
-
-
-Installation
-------------
-
-.. code:: bash
-
-   $ pip install vincenty
+   >>> V_inv(boston, newyork)
+   #distance [km], azimuth_dept [deg], azimuth_arr [deg]
+   (298.396057, 235.0838926194711, 233.1602005520544)
+   >>> V_inv(boston, newyork, miles=True)
+   #distance [miles], azimuth_dept [deg], azimuth_arr [deg]
+   (185.414713, 235.0838926194711, 233.1602005520544)
+   >>> V_inv(newyork, boston)
+   #distance [km], azimuth_dept [deg], azimuth_arr [deg]
+   (298.396057, 53.1602005520544, 55.0838926194711)
+   >>> V_dir(boston, 298.396057, 235.0838926194711)
+   #arrival_point (lat [deg],lon [deg]), azimuth_arr [deg]
+   ((40.779147202568396, -73.96808039548996), 233.16020055500005)
 
 
 References
